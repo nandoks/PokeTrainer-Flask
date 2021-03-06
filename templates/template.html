@@ -13,19 +13,24 @@
 <body>
     <script src="{{url_for('static', filename='qrcode.min.js')}}"></script>
     <script src="{{url_for('static', filename='generateQR.js')}}"></script>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" ">
+        <a href="/" style="color:white; text-decoration: none;">
+            <h1 style="margin-left: 11vw">PokeFriends</h1>
+        </a>
+    </nav>
+
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <ul id="messages" class="list-unstyled">
+    <div class="alert alert-warning" style="margin: 0 auto; width: 60vw;">
+        <ul id="messages" class="list-unstyled text-center">
         {% for message in messages %}
-        <li class="alert alert-success">{{ message }}</li>
+            <li class="alert alert-success">{{ message }}</li>
         {% endfor %}
-    </ul>
+        </ul>
+    </div>
     {% endif %}
     {% endwith %}
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <h1>{{ titulo }}</h1>
-    </nav>
 
     {% block conteudo %}
 

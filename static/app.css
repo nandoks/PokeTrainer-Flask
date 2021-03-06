@@ -1,14 +1,18 @@
-.INSTICT{
+.INSTINCT{
     border: 5px solid !important;
     border-color: yellow !important;
 }
 
 .MYSTIC{
     border: 5px solid !important;
-    border-color: lightblue!important;
+    border-color: blue!important;
 }
 
 .VALOR{
     border: 5px solid red !important;
     
+}
+
+.ANY{
+    border: 5px solid black !important;
 }

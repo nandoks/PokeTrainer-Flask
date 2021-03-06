@@ -1,12 +1,12 @@
 from models import Trainer, Country
 from datetime import datetime
 
-SQL_INSERT_TRAINER = 'INSERT into trainer (code, team, dateinserted, country) values (%s,%s,%s,%s);'
-SQL_SELECT_ALL_TRAINERS = 'SELECT * from Trainer inner join countries on Trainer.country = Countries.threecode order by dateinserted desc'
+SQL_INSERT_TRAINER = 'INSERT into trainer (code, team, country, dateinserted) values (%s,%s,%s,%s);'
+SQL_SELECT_ALL_TRAINERS = 'SELECT code, team, countries.name, dateinserted from Trainer inner join countries on Trainer.country = Countries.threecode order by dateinserted desc'
 SQL_SELECT_ALL_COUNTRIES = 'SELECT * from Countries'
-
-
-
+SQL_SELECT_TRAINERS_WITH_FILTER = 'SELECT code, team, countries.name, dateinserted from Trainer inner join countries on Trainer.country = Countries.threecode  where country=%s and team=%s order by dateinserted desc'
+SQL_SELECT_BY_ID = 'SELECT code, team, countries.name, dateinserted from Trainer inner join countries on Trainer.country = Countries.threecode where code=%s'
+SQL_UPDATE_TRAINER = 'UPDATE trainer set dateInserted=%s, team=%s, country=%s where code=%s'
 class TrainerDAO:
     def __init__(self,db):
         self._db = db
@@ -14,8 +14,11 @@ class TrainerDAO:
     def insert(self, trainer):
         cursor = self._db.connection.cursor()
 
-        cursor.execute(SQL_INSERT_TRAINER, (trainer.code, trainer.team,
-            trainer.dateInserted, trainer.country))
+        if(self.select_by_id(trainer.code) is not None):
+            cursor.execute(SQL_UPDATE_TRAINER, (trainer.dateInserted, trainer.team, trainer.country, trainer.code))
+        else:
+            cursor.execute(SQL_INSERT_TRAINER, (trainer.code, trainer.team,
+                trainer.country, trainer.dateInserted))
         self._db.connection.commit()
 
     def select_all(self):
@@ -23,6 +26,19 @@ class TrainerDAO:
         cursor.execute(SQL_SELECT_ALL_TRAINERS)
         result = list_trainers(cursor.fetchall())
         return result
+
+    def select_with_filter(self, country, team):
+        cursor = self._db.connection.cursor()
+        cursor.execute(SQL_SELECT_TRAINERS_WITH_FILTER, (country, team))
+        result = list_trainers(cursor.fetchall())
+        return result
+
+    def select_by_id(self, code):
+        cursor = self._db.connection.cursor()
+        cursor.execute(SQL_SELECT_BY_ID, [code])
+        result = cursor.fetchone()
+        return Trainer(result[0], result[1], result[2], result[3])
+        
 
 class CountryDAO:
     def __init__(self, db):

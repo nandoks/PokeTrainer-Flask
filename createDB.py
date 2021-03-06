@@ -20,8 +20,8 @@ criar_tabelas = '''SET NAMES latin1;
     CREATE TABLE `trainer` (
       `code` varchar(12) NOT NULL COLLATE utf8_bin,
       `team` varchar(10) NOT NULL COLLATE utf8_bin,
-      `dateInserted` DATETIME not null,
       `country` varchar(20) NOT NULL COLLATE utf8_bin,
+      `dateInserted` DATETIME not null,
       primary key (code),
       foreign key (country) references countries(threecode)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -284,10 +284,10 @@ cursor.executemany(
 
 # inserindo usuarios
 cursor.executemany(
-      'INSERT INTO pokefriends.trainer (code, team, dateinserted, country) VALUES (%s, %s, %s, %s)',
+      'INSERT INTO pokefriends.trainer (code, team, country, dateinserted) VALUES (%s, %s, %s, %s)',
       [
-            ('058450019208', 'VALOR' , '2021-03-05 14:00', 'BRA'),
-            ('427492506440', 'MYSTIC', '2021-03-05 12:00', 'FRA')
+            ('058450019208', 'VALOR' , 'BRA', '2021-03-05 14:00'),
+            ('427492506440', 'MYSTIC', 'FRA', '2021-03-05 12:00')
       ])
 
 cursor= conn.cursor()

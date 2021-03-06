@@ -30,43 +30,26 @@ def addTrainer():
     code = request.form['trainerCode'].replace(' ', '')
     if(len(code) != 12):
         flash('trainer code must contain 12 numbers')
-        return redirect(url_for('index'))
     if(not code.isdecimal()):
         flash('trainer code must be only made of numbers')
-        return redirect(url_for('index'))
 
-    team = request.form['team']
-    country = request.form['country']
-    trainer = Trainer(code, team, country)
-    trainerDAO.insert(trainer)
-    return redirect(url_for('index'))
-
-
-@app.route('/login')
-def login():
-    proxima = request.args.get('proxima')
-    return render_template('login.html', proxima=proxima)
-
-
-@app.route('/autenticar', methods=['POST', ])
-def autenticar():
-    if request.form['usuario'] in listaUsuarios:
-        usuario = listaUsuarios[request.form['usuario']]
-        if usuario.senha == request.form['senha']:
-            session['usuario_logado'] = usuario.id
-            flash(usuario.nome + ' Logado com sucesso')
-            proxima_pagina = request.form['proxima']
-            return redirect(proxima_pagina)
+    t = trainerDAO.select_by_id(code)
+    if(t.dateInserted - datetime.now()):
+        flash('trainer must wait 24h before sending their code again')
     else:
-        flash('Ocorreu um erro no login ou senha')
-        return redirect(url_for('login'))
-
-
-@app.route('/logout')
-def desloga():
-    session['usuario_logado'] = None
-    flash('Nenhum usuario logado')
+        team = request.form['team']
+        country = request.form['country']
+        trainer = Trainer(code, team, country)
+        trainerDAO.insert(trainer)
     return redirect(url_for('index'))
+
+@app.route('/search', methods=['GET'])
+def search():
+    countries = contryDAO.select_all()
+    trainers = trainerDAO.select_with_filter(request.args.get('country'), request.args.get('team'))
+    return render_template('index.html', titulo='Trainers', trainers=trainers, countries=countries)
+
+
 
 
 app.run(debug=True)
