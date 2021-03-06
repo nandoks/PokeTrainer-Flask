@@ -1,0 +1,14 @@
+.INSTICT{
+    border: 5px solid !important;
+    border-color: yellow !important;
+}
+
+.MYSTIC{
+    border: 5px solid !important;
+    border-color: lightblue!important;
+}
+
+.VALOR{
+    border: 5px solid red !important;
+    
+}

@@ -1,0 +1,67 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+<form action="{{url_for('addTrainer')}}" method="POST">
+	<input type="text" id="" name="trainerCode" class="">
+	<select name="country">
+		<option value="WW">WORLD WIDE(default)</option>
+		{% for country in countries%}
+		<option value="{{country.threecode}}">{{country.name}}</option>
+
+		{% endfor %}
+	</select>
+	<select name="team">
+		<option value="ANY">ANY</option>
+		<option value="VALOR">VALOR</option>
+		<option value="MYSTIC">MYSTIC</option>
+		<option value="INSTINCT">INSTINCT</option>
+	</select>
+	<input type="submit">
+</form>
+
+<div>
+	<form action="index" action="GET">
+		<select name="country">
+			<option value="WW">WORLD WIDE(default)</option>
+			{% for country in countries%}
+			<option value="{{country.threecode}}">{{country.name}}</option>
+
+			{% endfor %}
+		</select>
+		<select name="team">
+			<option value="ANY">ANY</option>
+			<option value="VALOR">VALOR</option>
+			<option value="MYSTIC">MYSTIC</option>
+			<option value="INSTINCT">INSTINCT</option>
+		</select>
+		<input type="submit" value="Search">
+	</form>
+</div>
+
+
+<div id="row">
+
+	{% for trainer in trainers%}
+	<!-- <div class="col-lg-3 col-md-4 col-xs-12" style="text-align: center">
+		<p class="thumbnail {{trainer.team}}" id="qr{{trainer.code}}">
+			<script type="text/javascript">
+				generateQR('{{ trainer.code.replace(' ','')}}');
+			</script>
+		</p>
+			<p class="card-text">{{trainer.code[0:4] + ' ' + trainer.code[4:8] + ' ' + trainer.code[8:]}}</p>
+	</div> -->
+	<div class="col-lg-3 col-md-4 col-xs-12" style="text-align: center">
+        <a class="thumbnail ">
+			<p id="qr{{trainer.code}}" class="{{trainer.team}}">
+				<script type="text/javascript">
+					generateQR('{{ trainer.code.replace(' ','')}}');
+				</script>
+			</p>
+        </a>
+        <strong>
+            <p style="margin-top: 0.5rem;">{{trainer.code[0:4] + ' ' + trainer.code[4:8] + ' ' + trainer.code[8:]}}</p>
+        </strong>
+    </div>
+	{% endfor %}
+</div>
+{% endblock %}
