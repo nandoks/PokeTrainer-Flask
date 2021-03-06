@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from datetime import datetime
-import pyodbc
 from models import Trainer, Country
 from DAO import TrainerDAO, CountryDAO
 from flask_mysqldb import MySQL
