@@ -1,23 +1,23 @@
 {% extends "template.html" %}
 {% block conteudo %}
 <div class="pagination-center text-center " style="margin: 1.5em">
-<form action="{{url_for('addTrainer')}}" method="POST">
-	<input type="text" id="" name="trainerCode" class="">
-	<select name="country">
-		<option value="WW">WORLD WIDE(default)</option>
-		{% for country in countries%}
-		<option value="{{country.threecode}}">{{country.name}}</option>
+	<form action="{{url_for('addTrainer')}}" method="POST">
+		<input type="text" id="" name="trainerCode" class="">
+		<select name="country">
+			<option value="WW">WORLD WIDE(default)</option>
+			{% for country in countries%}
+			<option value="{{country.threecode}}">{{country.name}}</option>
 
-		{% endfor %}
-	</select>
-	<select name="team">
-		<option value="ANY">ANY</option>
-		<option value="VALOR">VALOR</option>
-		<option value="MYSTIC">MYSTIC</option>
-		<option value="INSTINCT">INSTINCT</option>
-	</select>
-	<input type="submit">
-</form>
+			{% endfor %}
+		</select>
+		<select name="team">
+			<option value="ANY">ANY</option>
+			<option value="VALOR">VALOR</option>
+			<option value="MYSTIC">MYSTIC</option>
+			<option value="INSTINCT">INSTINCT</option>
+		</select>
+		<input type="submit">
+	</form>
 </div>
 
 <div class="text-center" style="margin: 1.5em">
@@ -38,7 +38,7 @@
 		<button type="submit">Submit</button>
 		<a href="/" style="color:black; text-decoration: none;"><button type="button">Reset</button></a>
 	</form>
-		
+
 </div>
 
 
@@ -47,19 +47,24 @@
 	{% for trainer in trainers%}
 
 	<div class="col-lg-3 col-md-4 col-xs-12" style="display:flex; flex-direction: column; align-items: center;">
-        <div class="thumbnail {{trainer.team}}">
+		<div class="thumbnail {{trainer.team}}">
 			<p id="qr{{trainer.code}}" class="" style=" margin: 0 auto;">
 				<script type="text/javascript">
 					generateQR('{{ trainer.code.replace(' ','')}}');
 				</script>
 			</p>
-        </div>
-        <strong>
-            <p style="margin-top: 0.5rem; text-align:center;">{{trainer.code[0:4] + ' ' + trainer.code[4:8] + ' ' + trainer.code[8:]}}</p>
-        </strong>
-		<p style="margin-top: 0.5rem; text-align:center;">{{trainer.country}}</p>
-		<p style="margin-top: 0.5rem; text-align:center;">{{trainer.team}}</p>
-    </div>
+		</div>
+		<div>
+			<strong>
+				<p style="text-align:center;">{{trainer.code[0:4] + ' ' + trainer.code[4:8] + ' ' + trainer.code[8:]}}
+				</p>
+			</strong>
+		</div>
+		<hr>
+		<!-- <p style="margin-top: 0.5rem; text-align:center;">{{trainer.country}}</p>
+		<p style="margin-top: 0.5rem; text-align:center;">{{trainer.team}}</p> -->
+	</div>
+
 	{% endfor %}
 </div>
 {% endblock %}
