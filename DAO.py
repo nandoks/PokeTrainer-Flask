@@ -37,7 +37,10 @@ class TrainerDAO:
         cursor = self._db.connection.cursor()
         cursor.execute(SQL_SELECT_BY_ID, [code])
         result = cursor.fetchone()
-        return Trainer(result[0], result[1], result[2], result[3])
+        if(result is not None):
+            return Trainer(result[0], result[1], result[2], result[3])
+        else:
+            return None
         
 
 class CountryDAO:

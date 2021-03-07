@@ -28,15 +28,19 @@ def index():
 @app.route('/addTrainer', methods=['POST', ])
 def addTrainer():
     code = request.form['trainerCode'].replace(' ', '')
+    ok = True
     if(len(code) != 12):
         flash('trainer code must contain 12 numbers')
+        ok = False
     if(not code.isdecimal()):
         flash('trainer code must be only made of numbers')
+        ok = False
 
     t = trainerDAO.select_by_id(code)
-    if(t.dateInserted - datetime.now()):
+    if(t is not None and t.dateInserted - datetime.now()):
         flash('trainer must wait 24h before sending their code again')
-    else:
+        ok = False
+    if(ok):
         team = request.form['team']
         country = request.form['country']
         trainer = Trainer(code, team, country)
